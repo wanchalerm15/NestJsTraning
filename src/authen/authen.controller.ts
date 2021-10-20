@@ -11,8 +11,11 @@ export class AuthenController {
 
   @ApiOperation({ summary: "ลงทะเบียนสมัครสมาชิก" })
   @Post('signup')
-  Signup(@Body() model: SignupDto) {
-    return model;
+  async Signup(@Body() model: SignupDto) {
+    return this.authenService.signup(model).then(m => {
+      m.password = '';
+      return m;
+    })
   }
 
   @ApiOperation({ summary: "เข้าสู่ระบบยืนยันตัวตน" })

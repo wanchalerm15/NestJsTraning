@@ -1,13 +1,18 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { ValidationPipe } from '@nestjs/common';
+import { BadRequestException, ValidationError, ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   // เพิ่ม Validator
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({
+    exceptionFactory: (errors: ValidationError[]) => {
+      const lists = errors.map(m => Object.entries(m.constraints).map((values) => values[1])).reduce((a, b) => a = [...a, ...b]);
+      return new BadRequestException(lists.length > 0 ? lists[0] : 'Bad Request');
+    }
+  }));
 
   // เพิ่ม Swagger UI => OpenAPI
   const config = new DocumentBuilder()
