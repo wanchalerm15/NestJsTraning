@@ -12,15 +12,12 @@ export class AuthenController {
   @ApiOperation({ summary: "ลงทะเบียนสมัครสมาชิก" })
   @Post('signup')
   async Signup(@Body() model: SignupDto) {
-    return this.authenService.signup(model).then(m => {
-      m.password = '';
-      return m;
-    })
+    return this.authenService.signup(model).then(m => ({ ...m['_doc'], password: '' }));
   }
 
   @ApiOperation({ summary: "เข้าสู่ระบบยืนยันตัวตน" })
   @Post('signin')
-  Signin(@Body() model: SigninDto) {
-    return model;
+  async Signin(@Body() model: SigninDto) {
+    return this.authenService.signin(model).then(m => ({ ...m['_doc'], password: '' }));
   }
 }
