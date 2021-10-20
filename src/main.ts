@@ -1,11 +1,15 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  //  เพิ่ม Swagger UI => OpenAPI
+  // เพิ่ม Validator
+  app.useGlobalPipes(new ValidationPipe());
+
+  // เพิ่ม Swagger UI => OpenAPI
   const config = new DocumentBuilder()
     .setTitle('Tranning Nestjs')
     .setDescription('The nestjs API description')
