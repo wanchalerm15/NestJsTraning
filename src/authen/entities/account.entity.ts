@@ -12,6 +12,7 @@ export class Account {
     password: string;
 
     @Prop()
+    @Prop({ required: true })
     firstname: string;
 
     @Prop()

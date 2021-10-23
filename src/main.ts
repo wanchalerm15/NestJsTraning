@@ -16,6 +16,7 @@ async function bootstrap() {
 
   // เพิ่ม Swagger UI => OpenAPI
   const config = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle('Tranning Nestjs')
     .setDescription('The nestjs API description')
     .setVersion('1.0')
